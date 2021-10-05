@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>3D-MAP 竹山数据 带你看世界</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+.mapboxgl-ctrl {
+    display: none !important;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1Ijoic2VhbnhpYWMiLCJhIjoiY2trZ2VvemRzMDc1ZjJucGswbWpmc3Z4ZSJ9.dvaOjU47DQrhBDYcX6jVBw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        zoom: 3,
+        center: [104.063893,30.575319],
+        pitch: 0,
+        bearing: 0,
+        style: 'mapbox://styles/seanxiac/ckn1a93uj1xg917n58pk4cs98'
+    });
+
+    map.on('load', () => {
+        map.addSource('mapbox-dem', {
+            'type': 'raster-dem',
+            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+            'tileSize': 512,
+            'maxzoom': 14
+        });
+        // add the DEM source as a terrain layer with exaggerated height
+        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+        // add a sky layer that will show when the map is highly pitched
+        map.addLayer({
+            'id': 'sky',
+            'type': 'sky',
+            'paint': {
+                'sky-type': 'atmosphere',
+                'sky-atmosphere-sun': [0.0, 0.0],
+                'sky-atmosphere-sun-intensity': 15
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
